@@ -1,0 +1,48 @@
+#Count unival subtrees
+
+class Node:
+    def __init__(self,dataval):
+        self.dataval = dataval
+        self.left = self.right = None
+
+    def getNodeVal(self, node):
+        return node.dataval
+    
+    def levelOrder(self,root):
+        if root is None:
+            return
+        queue = []
+        queue.append(root)
+        count = 0
+        while (len(queue)>0):
+            node = queue.pop(0)
+            val = self.getNodeVal(node)
+            if node.left is not None and node.right is not None:
+                queue.append(node.left)
+                queue.append(node.right)
+                leftVal = self.getNodeVal(node.left)
+                rightVal = self.getNodeVal(node.right)
+                if val == leftVal == rightVal:
+                    count+= 1
+            elif node.left is None and node.right is not None:
+                queue.append(node.right)
+                rightVal = self.getNodeVal(node.right)
+                if val == rightVal:
+                    count+=1
+            elif node.left is not None and node.right is None:
+                queue.append(node.left)
+                leftVal = self.getNodeVal(node.left)
+                if val == leftVal:
+                    count+= 1
+            elif node.left is None or node.right is None:
+                count+= 1
+                
+        return(count)
+            
+root = Node('c')
+root.left = Node('c')
+root.right = Node('b')
+root.right.left = Node('b')
+root.right.right = Node('b')
+root.right.right.right = Node('b')
+print(root.levelOrder(root))
